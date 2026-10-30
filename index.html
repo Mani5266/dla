@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DLA‑Lab Internal Set — 31/10/2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;}
+  .container{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+  header{text-align:center;padding:2.5rem 0 2rem;border-bottom:1px solid #1e293b;margin-bottom:2rem;}
+  header h1{font-size:1.8rem;color:#f8fafc;}
+  header p{color:#94a3b8;margin-top:.4rem;font-size:.95rem;}
+  .exam-note{background:#1e1b4b;border:1px solid #6366f1;border-radius:10px;padding:1rem 1.4rem;margin-bottom:2rem;color:#c7d2fe;font-size:.92rem;}
+  .exam-note strong{color:#a5b4fc;}
+  .filter-wrap{margin-bottom:2rem;text-align:center;}
+  .filter-wrap label{display:block;margin-bottom:.5rem;color:#94a3b8;font-size:.9rem;text-transform:uppercase;letter-spacing:.08em;}
+  select{background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:.65rem 1.2rem;font-size:1rem;width:100%;max-width:480px;cursor:pointer;outline:none;transition:border .2s;}
+  select:focus{border-color:#6366f1;}
+  .set{display:none;margin-bottom:2rem;border:1px solid #1e293b;border-radius:12px;overflow:hidden;background:#162032;}
+  .set.active{display:block;}
+  .set-header{padding:1.2rem 1.5rem;background:#1e293b;border-bottom:1px solid #334155;}
+  .set-header h2{font-size:1.25rem;color:#818cf8;}
+  .set-header .tag{display:inline-block;background:#312e81;color:#a5b4fc;font-size:.72rem;padding:.15rem .6rem;border-radius:20px;margin-left:.6rem;vertical-align:middle;letter-spacing:.04em;}
+  .set-body{padding:1.2rem 1.5rem;}
+  .set-body .desc{color:#cbd5e1;margin-bottom:1rem;font-size:.95rem;}
+  .restriction{background:#2a1a1a;border-left:3px solid #f87171;padding:.7rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1.2rem;font-size:.88rem;color:#fca5a5;}
+  .restriction strong{color:#f87171;}
+  .code-block{margin-top:.5rem;}
+  .code-block .file-label{font-size:.78rem;color:#64748b;margin-bottom:.3rem;font-family:monospace;}
+  pre{background:#0d1117;border:1px solid #1e293b;border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:.82rem;line-height:1.55;}
+  code{font-family:'Cascadia Code','Fira Code',monospace;}
+  .section-title{font-size:.85rem;color:#64748b;text-transform:uppercase;letter-spacing:.07em;margin:1.2rem 0 .5rem;}
+  footer{text-align:center;color:#475569;font-size:.8rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #1e293b;}
+  .note-items{margin-top:.5rem;padding-left:1.3rem;font-size:.88rem;color:#94a3b8;}
+  .code-block{position:relative;}
+  .copy-btn{position:absolute;top:.35rem;right:.35rem;background:#334155;color:#94a3b8;border:none;border-radius:6px;padding:.3rem .7rem;font-size:.72rem;font-family:inherit;cursor:pointer;transition:all .2s;z-index:2;}
+  .copy-btn:hover{background:#475569;color:#e2e8f0;}
+  .copy-btn.copied{background:#166534;color:#bbf7d0;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>DLA‑Lab Internal Set</h1>
+  <p>31/10/2026 &nbsp;•&nbsp; Time : 10.00 am to 1.00 pm</p>
+</header>
+
+<div class="exam-note">
+  <strong>Lab Instructions:</strong>
+  <ul class="note-items">
+    <li>Bring pencil / pen / all required items</li>
+    <li>ID cards mandatory</li>
+  </ul>
+</div>
+
+<div class="filter-wrap">
+  <label for="setFilter">Select a Set</label>
+  <select id="setFilter" onchange="showSet(this.value)">
+    <option value="all">All Sets</option>
+    <option value="set1">Set 1 — Self‑Driving Car</option>
+    <option value="set2">Set 2 — Human Activity Recognition</option>
+    <option value="set3">Set 3 — Quora Question Pair Similarity</option>
+    <option value="set4">Set 4 — Music Generation</option>
+  </select>
+</div>
+
+<!-- ==================== SET 1 ==================== -->
+<div id="set1" class="set active">
+  <div class="set-header">
+    <h2>Set 1 — Self‑Driving Car <span class="tag">CNN Regression</span></h2>
+  </div>
+  <div class="set-body">
+    <p class="desc">Perform EDA on the self‑driving car dataset and develop a CNN‑based regression model to predict steering angles from road images. Train the model and visualize actual versus predicted steering angles.</p>
+    <div class="restriction"><strong>Restriction:</strong> Use a prepared dataset and a reduced CNN architecture or the NVIDIA architecture provided in the lab.</div>
+
+    <div class="section-title">EDA</div>
+    <div class="code-block">
+      <div class="file-label">eda.py</div>
+<pre><code class="language-python">import pandas as pd, numpy as np, matplotlib.pyplot as plt, seaborn as sns
+
+# Load driving_log.csv — columns: center, left, right, steering, throttle, brake, speed
+df = pd.read_csv('driving_log.csv',
+                 names=['center','left','right','steering','throttle','brake','speed'])
+
+# ---------- basic stats ----------
+print(df.describe())
+print("Rows:", len(df))
+
+# ---------- steering angle distribution ----------
+plt.figure(figsize=(10,4))
+plt.hist(df['steering'], bins=50, color='steelblue')
+plt.xlabel('Steering Angle'); plt.ylabel('Count')
+plt.title('Distribution of Steering Angles'); plt.tight_layout(); plt.savefig('steering_dist.png'); plt.show()
+
+# ---------- speed vs steering ----------
+plt.figure(figsize=(8,4))
+plt.scatter(df['speed'], df['steering'], s=1, alpha=0.3)
+plt.xlabel('Speed'); plt.ylabel('Steering'); plt.title('Speed vs Steering'); plt.tight_layout(); plt.savefig('speed_vs_steering.png'); plt.show()
+
+# ---------- sample images ----------
+fig, axes = plt.subplots(1,3, figsize=(15,5))
+for i, col in enumerate(['center','left','right']):
+    img = plt.imread(df.iloc[0][col].strip())
+    axes[i].imshow(img); axes[i].set_title(col); axes[i].axis('off')
+plt.tight_layout(); plt.savefig('sample_cameras.png'); plt.show()
+</code></pre>
+    </div>
+
+    <div class="section-title">Model (NVIDIA Architecture)</div>
+    <div class="code-block">
+      <div class="file-label">model.py</div>
+<pre><code class="language-python">from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, Dense, Dropout, Flatten, Lambda, Cropping2D
+
+def build_nvidia_model():
+    model = Sequential([
+        # input 66x200x3 (preprocessed)
+        Lambda(lambda x: x / 127.5 - 1.0, input_shape=(66,200,3)),
+        Conv2D(24, (5,5), strides=(2,2), activation='elu'),
+        Conv2D(36, (5,5), strides=(2,2), activation='elu'),
+        Conv2D(48, (5,5), strides=(2,2), activation='elu'),
+        Conv2D(64, (3,3), activation='elu'),
+        Conv2D(64, (3,3), activation='elu'),
+        Flatten(),
+        Dense(100, activation='elu'),
+        Dropout(0.5),
+        Dense(50, activation='elu'),
+        Dense(10, activation='elu'),
+        Dense(1)                       # single steering output
+    ])
+    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    return model
+
+model = build_nvidia_model()
+model.summary()
+</code></pre>
+    </div>
+
+    <div class="section-title">Data Generator & Training</div>
+    <div class="code-block">
+      <div class="file-label">train.py</div>
+<pre><code class="language-python">import cv2, numpy as np
+from sklearn.model_selection import train_test_split
+
+IMG_H, IMG_W = 66, 200
+BATCH = 32
+
+def preprocess_image(path):
+    img = cv2.imread(path.strip())
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = img[60:140, :, :]                    # crop sky/hood
+    img = cv2.resize(img, (IMG_W, IMG_H))
+    return img
+
+def augment(img, steering):
+    if np.random.rand() < 0.5:
+        img = cv2.flip(img, 1)
+        steering = -steering
+    if np.random.rand() < 0.3:
+        brightness = np.random.uniform(0.6, 1.4)
+        img = np.clip(img * brightness, 0, 255).astype(np.uint8)
+    return img, steering
+
+def generator(samples, batch_size=BATCH):
+    while True:
+        np.random.shuffle(samples)
+        for offset in range(0, len(samples), batch_size):
+            batch = samples[offset:offset+batch_size]
+            imgs, angles = [], []
+            for center, left, right, steer in batch:
+                img = preprocess_image(center)
+                img, steer = augment(img, steer)
+                imgs.append(img); angles.append(steer)
+            yield np.array(imgs), np.array(angles)
+
+# build sample list from CSV
+samples = list(df[['center','left','right','steering']].values)
+train, val = train_test_split(samples, test_size=0.2, random_state=42)
+
+model = build_nvidia_model()
+history = model.fit(
+    generator(train), steps_per_epoch=len(train)//BATCH, epochs=15,
+    validation_data=generator(val), validation_steps=len(val)//BATCH,
+    verbose=1
+)
+model.save('steering_model.h5')
+</code></pre>
+    </div>
+
+    <div class="section-title">Actual vs Predicted Visualization</div>
+    <div class="code-block">
+      <div class="file-label">visualize.py</div>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np, cv2
+
+# predict on validation samples
+val_imgs  = np.array([preprocess_image(s[0]) for s in val])
+val_steer = np.array([s[3] for s in val])
+preds = model.predict(val_imgs).flatten()
+
+# ---------- line plot ----------
+fig, ax = plt.subplots(figsize=(14,4))
+ax.plot(val_steer[:200],  label='Actual',  alpha=0.8)
+ax.plot(preds[:200],      label='Predicted', alpha=0.8)
+ax.set_xlabel('Sample'); ax.set_ylabel('Steering Angle')
+ax.set_title('Actual vs Predicted Steering Angles'); ax.legend(); plt.tight_layout()
+plt.savefig('actual_vs_predicted.png'); plt.show()
+
+# ---------- scatter ----------
+plt.figure(figsize=(6,6))
+plt.scatter(val_steer, preds, s=4, alpha=0.3)
+plt.plot([-0.5,0.5],[-0.5,0.5],'r--')
+plt.xlabel('Actual'); plt.ylabel('Predicted'); plt.title('Scatter Plot')
+plt.tight_layout(); plt.savefig('scatter.png'); plt.show()
+</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SET 2 ==================== -->
+<div id="set2" class="set">
+  <div class="set-header">
+    <h2>Set 2 — Human Activity Recognition <span class="tag">Classical ML</span></h2>
+  </div>
+  <div class="set-body">
+    <p class="desc">Perform data preprocessing and EDA on the Human Activity Recognition dataset. Implement any TWO classical ML algorithms (Random Forest, SVM or KNN) to classify human activities. Compare their performance using accuracy and confusion matrix.</p>
+
+    <div class="section-title">Preprocessing &amp; EDA</div>
+    <div class="code-block">
+      <div class="file-label">preprocess.py</div>
+<pre><code class="language-python">import pandas as pd, numpy as np, matplotlib.pyplot as sns, seaborn as sns
+from sklearn.preprocessing import StandardScaler
+
+# UCI HAR dataset: X_train.txt, y_train.txt, X_test.txt, y_test.txt
+X_train = pd.read_csv('X_train.txt', sep=r'\s+', header=None)
+y_train = pd.read_csv('y_train.txt', header=None).squeeze()
+X_test  = pd.read_csv('X_test.txt',  sep=r'\s+', header=None)
+y_test  = pd.read_csv('y_test.txt',  header=None).squeeze()
+
+ACTIVITY = {1:'WALKING',2:'WALKING_UPSTAIRS',3:'WALKING_DOWNSTAIRS',
+            4:'SITTING',5:'STANDING',6:'LAYING'}
+
+# ---------- label distribution ----------
+plt.figure(figsize=(8,4))
+y_train.map(ACTIVITY).value_counts().plot(kind='bar', color='steelblue')
+plt.title('Activity Distribution'); plt.ylabel('Samples'); plt.xticks(rotation=45)
+plt.tight_layout(); plt.savefig('activity_dist.png'); plt.show()
+
+# ---------- feature correlation ----------
+plt.figure(figsize=(10,8))
+sns.heatmap(X_train.iloc[:, :20].corr(), cmap='coolwarm', center=0)
+plt.title('Feature Correlation (first 20 features)')
+plt.tight_layout(); plt.savefig('correlation.png'); plt.show()
+
+# ---------- t‑SNE scatter ----------
+from sklearn.manifold import TSNE
+tsne = TSNE(n_components=2, random_state=42, perplexity=30)
+X_2d = tsne.fit_transform(StandardScaler().fit_transform(X_train.iloc[:, :100]))
+plt.figure(figsize=(8,6))
+for act in ACTIVITY:
+    mask = y_train == act
+    plt.scatter(X_2d[mask,0], X_2d[mask,1], s=4, label=ACTIVITY[act], alpha=0.5)
+plt.legend(markerscale=3); plt.title('t‑SNE of HAR Features')
+plt.tight_layout(); plt.savefig('tsne.png'); plt.show()
+
+# ---------- scale ----------
+scaler = StandardScaler()
+X_train_s = scaler.fit_transform(X_train)
+X_test_s  = scaler.transform(X_test)
+print("Shapes:", X_train_s.shape, X_test_s.shape)
+</code></pre>
+    </div>
+
+    <div class="section-title">Random Forest + SVM</div>
+    <div class="code-block">
+      <div class="file-label">models.py</div>
+<pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import matplotlib.pyplot as plt, seaborn as sns, time
+
+# ---------- Random Forest ----------
+t0 = time.time()
+rf = RandomForestClassifier(n_estimators=200, random_state=42, n_jobs=-1)
+rf.fit(X_train_s, y_train)
+rf_time = time.time() - t0
+y_pred_rf = rf.predict(X_test_s)
+acc_rf = accuracy_score(y_test, y_pred_rf)
+
+# ---------- SVM ----------
+t0 = time.time()
+svm = SVC(kernel='rbf', C=10, random_state=42)
+svm.fit(X_train_s, y_train)
+svm_time = time.time() - t0
+y_pred_svm = svm.predict(X_test_s)
+acc_svm = accuracy_score(y_test, y_pred_svm)
+
+# ---------- comparison ----------
+print(f"{'Model':<15} {'Accuracy':>10} {'Time (s)':>10}")
+print(f"{'Random Forest':<15} {acc_rf:>10.4f} {rf_time:>10.1f}")
+print(f"{'SVM (RBF)':<15} {acc_svm:>10.4f} {svm_time:>10.1f}")
+print("\n--- RF Classification Report ---")
+print(classification_report(y_test, y_pred_rf, target_names=ACTIVITY.values()))
+print("--- SVM Classification Report ---")
+print(classification_report(y_test, y_pred_svm, target_names=ACTIVITY.values()))
+
+# ---------- confusion matrices ----------
+fig, axes = plt.subplots(1,2, figsize=(16,6))
+for ax, preds, title in zip(axes, [y_pred_rf,y_pred_svm], ['Random Forest','SVM']):
+    cm = confusion_matrix(y_test, preds)
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax,
+                xticklabels=ACTIVITY.values(), yticklabels=ACTIVITY.values())
+    ax.set_title(f'{title} — Accuracy {accuracy_score(y_test,preds):.4f}')
+    ax.set_xlabel('Predicted'); ax.set_ylabel('Actual')
+plt.tight_layout(); plt.savefig('confusion_matrices.png'); plt.show()
+</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SET 3 ==================== -->
+<div id="set3" class="set">
+  <div class="set-header">
+    <h2>Set 3 — Quora Question Pair Similarity <span class="tag">NLP / TF‑IDF</span></h2>
+  </div>
+  <div class="set-body">
+    <p class="desc">Perform text preprocessing and feature extraction using TF‑IDF on the Quora Question Pair dataset. Implement Logistic Regression or Linear SVM to classify question pairs as duplicate or non‑duplicate. Evaluate using accuracy and F1‑score.</p>
+
+    <div class="section-title">Text Preprocessing</div>
+    <div class="code-block">
+      <div class="file-label">preprocess.py</div>
+<pre><code class="language-python">import pandas as pd, numpy as np, re, string, nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+nltk.download('stopwords', quiet=True); nltk.download('wordnet', quiet=True)
+
+df = pd.read_csv('quora_question_pairs.csv')   # columns: id, qid1, qid2, question1, question2, is_duplicate
+print("Shape:", df.shape)
+print(df['is_duplicate'].value_counts(normalize=True))
+
+stop_words = set(stopwords.words('english'))
+lemmatizer = WordNetLemmatizer()
+
+def clean(text):
+    if not isinstance(text, str): return ""
+    text = text.lower()
+    text = re.sub(r'[^a-z\s]', '', text)            # remove digits / punctuation
+    tokens = text.split()
+    tokens = [lemmatizer.lemmatize(t) for t in tokens if t not in stop_words]
+    return ' '.join(tokens)
+
+df['q1_clean'] = df['question1'].apply(clean)
+df['q2_clean'] = df['question2'].apply(clean)
+print(df[['question1','q1_clean']].head())
+</code></pre>
+    </div>
+
+    <div class="section-title">TF‑IDF Feature Extraction</div>
+    <div class="code-block">
+      <div class="file-label">features.py</div>
+<pre><code class="language-python">from sklearn.feature_extraction.text import TfidfVectorizer
+from scipy.sparse import hstack
+
+# fit on both questions together
+tfidf = TfidfVectorizer(max_features=50000, ngram_range=(1,2), sublinear_tf=True)
+tfidf.fit(df['q1_clean'] + ' ' + df['q2_clean'])
+
+q1_tfidf = tfidf.transform(df['q1_clean'])
+q2_tfidf = tfidf.transform(df['q2_clean'])
+
+# simple feature engineering
+from sklearn.metrics.pairwise import cosine_similarity
+X_cos = cosine_similarity(q1_tfidf, q2_tfidf).diagonal().reshape(-1,1)
+
+X = hstack([q1_tfidf, q2_tfidf, X_cos])
+y = df['is_duplicate'].values
+
+print("Feature matrix:", X.shape)
+</code></pre>
+    </div>
+
+    <div class="section-title">Logistic Regression &amp; Linear SVM</div>
+    <div class="code-block">
+      <div class="file-label">train.py</div>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, classification_report
+import matplotlib.pyplot as plt, seaborn as sns
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y)
+
+# ---------- Logistic Regression ----------
+lr = LogisticRegression(max_iter=1000, C=1.0, n_jobs=-1)
+lr.fit(X_train, y_train)
+y_pred_lr = lr.predict(X_test)
+
+# ---------- Linear SVM ----------
+svm = LinearSVC(C=0.5, max_iter=2000, random_state=42)
+svm.fit(X_train, y_train)
+y_pred_svm = svm.predict(X_test)
+
+# ---------- evaluation ----------
+for name, preds in [('Logistic Regression', y_pred_lr), ('Linear SVM', y_pred_svm)]:
+    print(f"\n=== {name} ===")
+    print(f"Accuracy : {accuracy_score(y_test, preds):.4f}")
+    print(f"F1 Score : {f1_score(y_test, preds):.4f}")
+    print(classification_report(y_test, preds, target_names=['Non-Duplicate','Duplicate']))
+
+# ---------- confusion matrices ----------
+fig, axes = plt.subplots(1,2, figsize=(12,5))
+for ax, preds, title in zip(axes, [y_pred_lr,y_pred_svm], ['Logistic Regression','Linear SVM']):
+    sns.heatmap(confusion_matrix(y_test,preds), annot=True, fmt='d', cmap='Greens', ax=ax,
+                xticklabels=['Non-Dup','Dup'], yticklabels=['Non-Dup','Dup'])
+    ax.set_title(f'{title} — Acc {accuracy_score(y_test,preds):.3f}')
+    ax.set_xlabel('Predicted'); ax.set_ylabel('Actual')
+plt.tight_layout(); plt.savefig('quora_confusion.png'); plt.show()
+</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SET 4 ==================== -->
+<div id="set4" class="set">
+  <div class="set-header">
+    <h2>Set 4 — Music Generation <span class="tag">Char‑level RNN</span></h2>
+  </div>
+  <div class="set-body">
+    <p class="desc">Develop a character‑level RNN model using ABC Notation for music generation. Perform character encoding, prepare input sequences, train the model and generate a short music sequence. Convert the generated ABC Notation into MIDI format.</p>
+    <div class="restriction"><strong>Restriction:</strong> Use a prepared dataset and a simplified RNN model. Pretrained weights or a previously trained model should not replace the required implementation.</div>
+
+    <div class="section-title">Character Encoding &amp; Sequence Preparation</div>
+    <div class="code-block">
+      <div class="file-label">data.py</div>
+<pre><code class="language-python">import numpy as np
+
+# load ABC notation corpus
+with open('abc_dataset.txt', 'r', encoding='utf-8') as f:
+    text = f.read()
+
+print("Corpus length:", len(text))
+
+# character‑level encoding
+chars = sorted(set(text))
+char2idx = {c:i for i,c in enumerate(chars)}
+idx2char = {i:c for c,i in char2idx.items()}
+vocab_size = len(chars)
+print("Vocabulary:", vocab_size, "characters")
+
+# encode entire corpus
+data = np.array([char2idx[c] for c in text], dtype=np.int32)
+
+# build input sequences (chunk length = 40)
+CHUNK = 40
+X, y_seq = [], []
+for i in range(0, len(data) - CHUNK - 1, CHUNK):
+    X.append(data[i:i+CHUNK])
+    y_seq.append(data[i+1:i+CHUNK+1])          # next‑char target
+
+X = np.array(X); y_seq = np.array(y_seq)
+print("Sequences:", X.shape, y_seq.shape)
+</code></pre>
+    </div>
+
+    <div class="section-title">Character‑level RNN Model</div>
+    <div class="code-block">
+      <div class="file-label">model.py</div>
+<pre><code class="language-python">from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
+
+EMBED_DIM = 64
+LSTM_UNITS = 128
+
+model = Sequential([
+    Embedding(vocab_size, EMBED_DIM, input_length=CHUNK),
+    LSTM(LSTM_UNITS, return_sequences=True),
+    Dropout(0.2),
+    LSTM(LSTM_UNITS, return_sequences=True),
+    Dropout(0.2),
+    Dense(vocab_size, activation='softmax')
+])
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam')
+model.summary()
+
+# train
+history = model.fit(X, y_seq, batch_size=64, epochs=20, validation_split=0.1)
+</code></pre>
+    </div>
+
+    <div class="section-title">Generate Music from Model</div>
+    <div class="code-block">
+      <div class="file-label">generate.py</div>
+<pre><code class="language-python">import numpy as np
+
+def generate_text(model, seed, length=200, temperature=0.8):
+    generated = seed
+    for _ in range(length):
+        x = np.array([[char2idx[c] for c in generated[-CHUNK:]]])
+        probs = model.predict(x, verbose=0)[0] / temperature
+        probs = np.exp(probs) / np.exp(probs).sum()
+        next_idx = np.random.choice(len(probs), p=probs)
+        generated += idx2char[next_idx]
+    return generated
+
+# pick a random seed from corpus
+seed = text[:CHUNK]
+generated_abc = generate_text(model, seed, length=300, temperature=0.8)
+print(generated_abc)
+
+with open('generated.abc', 'w') as f:
+    f.write(generated_abc)
+print("Saved generated.abc")
+</code></pre>
+    </div>
+
+    <div class="section-title">Convert ABC → MIDI</div>
+    <div class="code-block">
+      <div class="file-label">abc_to_midi.py</div>
+<pre><code class="language-python">from music21 import converter, note, stream
+import os
+
+# convert ABC to midi using music21
+score = converter.parse('generated.abc')
+score.write('midi', fp='generated.mid')
+print("MIDI saved as generated.mid")
+
+# alternative without music21 — manual conversion using mido
+# from mido import Message, MidiFile, MidiTrack
+# midi = MidiFile(); track = MidiTrack(); midi.tracks.append(track)
+# track.append(Message('program_change', program=0, time=0))
+# NOTE_NAMES = {'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11}
+# for ch in generated_abc:
+#     if ch in NOTE_NAMES:
+#         pitch = 60 + NOTE_NAMES[ch]
+#         track.append(Message('note_on', note=pitch, velocity=64, time=0))
+#         track.append(Message('note_off', note=pitch, velocity=64, time=160))
+# midi.save('generated.mid')
+</code></pre>
+    </div>
+  </div>
+</div>
+
+<footer>
+  DLA‑Lab Internal Set &nbsp;•&nbsp; 31/10/2026 &nbsp;•&nbsp; Pencil/pen required &nbsp;•&nbsp; ID card mandatory
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  hljs.highlightAll();
+
+  document.querySelectorAll('.code-block').forEach(cb=>{
+    const btn=document.createElement('button');
+    btn.className='copy-btn';
+    btn.textContent='Copy';
+    btn.onclick=()=>{
+      const code=cb.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(()=>{
+        btn.textContent='Copied!';
+        btn.classList.add('copied');
+        setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1600);
+      });
+    };
+    cb.style.position='relative';
+    cb.appendChild(btn);
+  });
+
+  function showSet(val){
+    document.querySelectorAll('.set').forEach(el=>el.classList.remove('active'));
+    if(val==='all'){
+      document.querySelectorAll('.set').forEach(el=>el.classList.add('active'));
+    }else{
+      document.getElementById(val).classList.add('active');
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+</script>
+
+</body>
+</html>
